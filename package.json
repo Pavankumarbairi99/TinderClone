@@ -1,0 +1,17 @@
+{
+    "name": "tinder-clone",
+    "version": "1.0.0",
+    "description": "Tinder Clone use nodejs",
+    "license": "ISC",
+    "author": "Pavan Kumar Bairi",
+    "type": "commonjs",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/app.js",
+        "dev": "nodemon src/app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "express": "^5.1.0"
+    }
+}
