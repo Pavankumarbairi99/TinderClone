@@ -41,15 +41,15 @@ app.post("/user", async(req, res) => {
 app.post("/login", async(req, res) => {
     try {
         let { emailId, password } = req.body;
-        let findprofile = await User.findOne({ emailId: emailId })
-        if (!findprofile) {
+        let user = await User.findOne({ emailId: emailId })
+        if (!user) {
             throw new Error("Invalid Credentials")
         }
-        let passwordCheck = await bcrypt.compare(password, findprofile.password)
+        let passwordCheck = await user.posswordValidate(password)
         if (passwordCheck) {
-            const token = await jwt.sign({ _id: findprofile._id }, "TinderClone#9980p", { expiresIn: "1d" })
+            const token = await user.getJwt()
             res.cookie("token", token, { httpOnly: true })
-            res.send(findprofile.firstName + " " + findprofile.lastName + " " + "Login Sucessfull")
+            res.send(user.firstName + " " + user.lastName + " " + "Login Sucessfull")
         } else {
             throw new Error("Invalid Credentials")
         }

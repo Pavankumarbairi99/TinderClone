@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 const validator = require("validator")
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
 
 const userschema = new mongoose.Schema({
     firstName: {
         type: String,
         minLength: 4,
-        maxLength: 15,
+        maxLength: 20,
+        required: true,
+        trim: true
 
     },
     lastName: {
@@ -28,7 +32,6 @@ const userschema = new mongoose.Schema({
         type: String,
         required: true,
         minLength: 6,
-
         trim: true,
         validate(value) {
             if (!validator.isStrongPassword(value)) {
@@ -68,4 +71,16 @@ const userschema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+userschema.methods.getJwt = async function() {
+    let user = this;
+    const token = await jwt.sign({ _id: user._id }, "TinderClone#9980p", { expiresIn: "1d" })
+    return token
+}
+userschema.methods.posswordValidate = async function(userinputPossword) {
+    let user = this;
+    const isPosswordValide = await bcrypt.compare(userinputPossword, user.password)
+    return isPosswordValide;
+}
+
 module.exports = mongoose.model("users", userschema)
