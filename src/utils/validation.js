@@ -11,8 +11,6 @@ let loginValidation = async(req) => {
     console.log(passwordCheck)
     if (passwordCheck) {
         return true
-    } else {
-        throw new Error("Invalid Credentials")
     }
 }
 module.exports = {
